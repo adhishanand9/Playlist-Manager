@@ -1,9 +1,9 @@
 import java.util.*;
-class PlayList {
+import java.io.*;
+//import Adhish.DS.*;
+class PlayList implements Serializable{
     String name;
-    PlayList(){
 
-    }
     public void setName(String name){
         this.name=name;
     }
@@ -11,18 +11,25 @@ class PlayList {
         clearScreen();
         System.out.println(name);
     }
-    PlayList(String name){
-        this.name=name;
+    PlayList(){
+        //this.name=name;
     }
-    class Songs {
-            
+    private static class Songs {
+        String songName;
+        int songId;
+        void setSongName(String songName){
+            this.songName=songName;
+
+        }
+        void setSongId(int songId){
+            this.songId=songId;
+        }
+
     }
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-}
-class Player extends PlayList{
     Scanner sc=new Scanner(System.in);
     int value;
     static int flag=0;
@@ -49,26 +56,77 @@ class Player extends PlayList{
         }
     }
     void createPlaylist(){
+        Scanner sc=new Scanner(System.in);
         clearScreen();
         System.out.println("Enter Name:");
         String namePly=sc.nextLine();
-        //PlayList pList = new PlayList(namePly);
-        super.setName(namePly);
-        super.displayName();
+        setName(namePly);
+        
+        displayMenu();
+        //displayName();
+
+    }
+    public void displayMenu(){
+        System.out.println("1.Add Song.");
+        System.out.println("2.Delete Song.");
+        System.out.println("3.Play Song");
+        System.out.println("4.Set Mode");
+        System.out.println("5.Back To Main Menu");
+        value=sc.nextInt();
+        switch (value){
+            case 1:addSong();
+                    break;
+            case 2:deleteSong();
+                break;
+            case 3:playSong();
+                break;
+            case 4:setMode();
+                break;
+            case 5:display();
+                break;
+            default:System.exit(0);
+                break;
+        }
+
+
+    }
+    public void addSong(){
+
+    }
+    public void deleteSong(){
+
+    }
+    public void playSong(){
+
+    }
+    public void setMode(){
 
     }
     public void display(){
-
-    }
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        System.out.println("Welcome!");
+        System.out.println("1.Create Playlist.");
+        System.out.println("2.Goto Playlist.");
+        System.out.println("3.Exit");
+        value=sc.nextInt();
+        if(value==1){
+            createPlaylist();
+        }
+        else if(value==2)
+        {
+            displayMenu();
+        }
+        else if(value==3)
+        {
+            System.exit(0);
+        }
     }
 }
+
 public class Main {
 
     public static void main(String[] args) {
-        Player ply=new Player();
+        PlayList ply=new PlayList();
         ply.checkFlag();
+
     }
 }
