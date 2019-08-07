@@ -1,48 +1,39 @@
 import java.util.*;
+import java.lang.*;
 import java.io.*;
-//import Adhish.DS.*;
-class PlayList implements Serializable{
-    String name;
 
-    public void setName(String name){
+class Playlist implements Serializable{
+    String name;
+    static int id=0;
+    static void setID(){
+        id=id+1;
+    }
+    LinkedList<String> Songs = new LinkedList<String>();
+    void setName(String name){
         this.name=name;
     }
-    public void displayName(){
-        clearScreen();
-        System.out.println(name);
-    }
-    PlayList(){
-        //this.name=name;
-    }
-    private static class Songs {
-        String songName;
-        int songId;
-        void setSongName(String songName){
-            this.songName=songName;
-
-        }
-        void setSongId(int songId){
-            this.songId=songId;
+    private static class Songs{
+        int id;
+        public void setID(int id){
+            this.id=id;
         }
 
+    }
+    public void createSongs() throws NullPointerException{
+        for(int i=0;i<10;i++)
+        {
+            Songs []s=new Songs[10] ;
+            s[i].setID(i);
+
+        }
     }
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-    Scanner sc=new Scanner(System.in);
-    int value;
-    static int flag=0;
-    public void checkFlag(){
-        if(flag==0) {
-            displayFirst();
-        }
-        else{
-            display();
-        }
-    }
-    public void displayFirst(){
-        flag=1;
+    public void displayFirst()throws Exception{
+        int value;
+        Scanner sc=new Scanner(System.in);
         System.out.println("Welcome!");
         System.out.println("1.Create Playlist.");
         System.out.println("2.Exit");
@@ -55,27 +46,28 @@ class PlayList implements Serializable{
             System.exit(0);
         }
     }
-    void createPlaylist(){
+    public void createPlaylist() throws Exception{
+        Playlist pl = new Playlist();
         Scanner sc=new Scanner(System.in);
-        clearScreen();
         System.out.println("Enter Name:");
-        String namePly=sc.nextLine();
-        setName(namePly);
-        
+        String name1=sc.nextLine();
+        pl.setName(name1);
+        savePlayList(pl,name1);
+        clearScreen();
         displayMenu();
-        //displayName();
 
     }
-    public void displayMenu(){
+    public void displayMenu ()throws Exception{
+        Scanner sc=new Scanner(System.in);
         System.out.println("1.Add Song.");
         System.out.println("2.Delete Song.");
         System.out.println("3.Play Song");
         System.out.println("4.Set Mode");
         System.out.println("5.Back To Main Menu");
-        value=sc.nextInt();
+        int value=sc.nextInt();
         switch (value){
             case 1:addSong();
-                    break;
+                break;
             case 2:deleteSong();
                 break;
             case 3:playSong();
@@ -90,24 +82,13 @@ class PlayList implements Serializable{
 
 
     }
-    public void addSong(){
-
-    }
-    public void deleteSong(){
-
-    }
-    public void playSong(){
-
-    }
-    public void setMode(){
-
-    }
-    public void display(){
+    public void display ()throws Exception{
+        Scanner sc=new Scanner(System.in);
         System.out.println("Welcome!");
         System.out.println("1.Create Playlist.");
         System.out.println("2.Goto Playlist.");
         System.out.println("3.Exit");
-        value=sc.nextInt();
+        int value=sc.nextInt();
         if(value==1){
             createPlaylist();
         }
@@ -120,13 +101,44 @@ class PlayList implements Serializable{
             System.exit(0);
         }
     }
-}
+    public void savePlayList(Playlist pl,String name1) throws Exception{
+        FileOutputStream fs=new FileOutputStream(id+".txt");
+        ObjectOutputStream oos=new ObjectOutputStream(fs);
+        oos.writeObject(pl);
+        oos.flush();
+        oos.close();
+        fs.close();
+    }
+    public void addSong(){
 
+    }
+    public void deleteSong(){
+
+    }
+    public void playSong(){
+
+    }
+    public void setMode(){
+
+    }
+
+
+
+}
 public class Main {
 
-    public static void main(String[] args) {
-        PlayList ply=new PlayList();
-        ply.checkFlag();
+    public static void main(String[] args) throws Exception
+    {
+        Playlist ply=new Playlist();
+        //ply.createSongs();
+        ply.setName("PlayX");
+        FileOutputStream fs=new FileOutputStream("Playlist.txt");
+        ObjectOutputStream oos=new ObjectOutputStream(fs);
+        oos.writeObject(ply);
+        oos.flush();
+        oos.close();
+        fs.close();
+        ply.displayFirst();
 
     }
 }
